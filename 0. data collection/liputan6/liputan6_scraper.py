@@ -1,8 +1,8 @@
 import requests
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup as bs
 import json, os, glob
 import threading
-from scraper_utils import write_file
+from scraper_utils import write_file, load_data
 
 def get_id(url):
     '''Getting the ID of the news from its url'''
@@ -40,12 +40,12 @@ def scrape_article(url, destination):
 
 def multiple_article_scraper(urls, destination):
     num_error = 0
-    for url in urls:
+    for i, url in enumerate(urls):
         try:
             scrape_article(url, destination)
         except:
             num_error += 1
-            print('Error scraping data {}/{}; ID {}; Error:{}'.format(i+1, num_news, get_id(url), num_error))
+            print('Error scraping ID {}; {}'.format(get_id(url), url))
 
 def multi_threading(urls, destination, num_thread=1):
     os.makedirs(destination, exist_ok=True)
@@ -56,19 +56,15 @@ def multi_threading(urls, destination, num_thread=1):
         t = threading.Thread(target=multiple_article_scraper, args=(cur_urls, destination,))
         threads.append(t)
         t.start()
-'''
-def news_dataset_generator(urls, destination, num_thread=1):
-    dataset = []
-    num_news = len(url_list)
-    num_error = 0
-    for i, url in enumerate(url_list):
-        print('Scraping {}/{}'.format(i+1, num_news))
-        try:
-            news = scrape_article(url)
-            dataset.append(news)
-        except:
-            num_error += 1
-            print('Error scraping data {}/{}; ID {}; Error:{}'.format(i+1, num_news, get_id(url), num_error))
-    return dataset
-'''
 
+
+#url = 'https://www.liputan6.com/regional/read/4947491/resensi-babad-banyumas-belajar-sejarah-dengan-cara-asyik-melalui-komik'
+#scrape_article(url, 'dataset')
+
+urls = load_data('0. data collection/liputan6/url.json')
+
+THREAD = 1
+
+multi_threading(urls['dev_urls'], 'dataset/raw/dev', THREAD)
+multi_threading(urls['test_urls'], 'dataset/raw/test', THREAD)
+multi_threading(urls['train_urls'], 'dataset/raw/train', THREAD)
