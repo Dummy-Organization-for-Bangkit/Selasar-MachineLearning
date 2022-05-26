@@ -61,9 +61,9 @@ def multi_threading(urls, destination, num_thread=1):
 #url = 'https://www.liputan6.com/regional/read/4947491/resensi-babad-banyumas-belajar-sejarah-dengan-cara-asyik-melalui-komik'
 #scrape_article(url, 'dataset')
 
-urls = load_data('0. data collection/liputan6/url.json')
+urls = load_data('url.json')
 
-THREAD = 1
+THREAD = 10
 
 multi_threading(urls['dev_urls'], 'dataset/raw/dev', THREAD)
 multi_threading(urls['test_urls'], 'dataset/raw/test', THREAD)
