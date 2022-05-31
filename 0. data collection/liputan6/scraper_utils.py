@@ -10,14 +10,15 @@ def load_data(title):
     with open(title, encoding='utf-8') as f:
         return json.load(f)
 
-def write_file(id, url, title, date, article, summary, destination):
+def write_file(id, url, title, date, article, summary, destination, image):
     news_data = {
         'id': id,
         'url': url,
         'title': title,
         'date': date,
         'content': article,
-        'summary': summary
+        'summary': summary,
+        'image': image
     }
     title = '{}/{}.json'.format(destination, id)
     save_data(title, news_data)

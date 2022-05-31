@@ -52,7 +52,9 @@ def get_urls(channels, date_range):
             except:
                 continue
         
-        if not os.path.isdir('0. data collection/liputan6/url/'):
-            os.mkdir('0. data collection/liputan6/url/') 
+        os.makedirs('0. data collection/liputan6/url/', exist_ok=True) 
         title = '0. data collection/liputan6/url/liputan6_{}_url.json'.format(channel)
         save_data(title, url_list)
+
+        return url_list
+        
